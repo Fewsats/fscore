@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "fscore"
+  site-url: "https://Fewsats.github.io/fscore"
+  description: ""
+  repo-branch: main
+  repo-url: "https://github.com/Fewsats/fscore"
