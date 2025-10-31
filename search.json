@@ -1,0 +1,102 @@
+[
+  {
+    "objectID": "queue.html",
+    "href": "queue.html",
+    "title": "Task Queue",
+    "section": "",
+    "text": "When handling HTTP requests that trigger long-running tasks: 1. You want to return immediately (non-blocking) 2. Process work in background 3. Limit concurrent execution\nThis is exactly what we need for scraping store data - we don’t want to block the HTTP response while waiting for Playwright to finish.",
+    "crumbs": [
+      "Task Queue"
+    ]
+  },
+  {
+    "objectID": "queue.html#the-problem",
+    "href": "queue.html#the-problem",
+    "title": "Task Queue",
+    "section": "",
+    "text": "When handling HTTP requests that trigger long-running tasks: 1. You want to return immediately (non-blocking) 2. Process work in background 3. Limit concurrent execution\nThis is exactly what we need for scraping store data - we don’t want to block the HTTP response while waiting for Playwright to finish.",
+    "crumbs": [
+      "Task Queue"
+    ]
+  },
+  {
+    "objectID": "queue.html#basic-queue-operations",
+    "href": "queue.html#basic-queue-operations",
+    "title": "Task Queue",
+    "section": "Basic Queue Operations",
+    "text": "Basic Queue Operations\nPython’s asyncio.Queue is the foundation.\n\n# Create a queue\nq = asyncio.Queue()\n\n# Put items (non-blocking when no maxsize)\nawait q.put(\"task1\")\nawait q.put(\"task2\")\n\nassert q.qsize() == 2\n\n\n# Get items (blocks until available)\nitem = await q.get()\nassert item == \"task1\"",
+    "crumbs": [
+      "Task Queue"
+    ]
+  },
+  {
+    "objectID": "queue.html#semaphore-for-concurrency-limiting",
+    "href": "queue.html#semaphore-for-concurrency-limiting",
+    "title": "Task Queue",
+    "section": "Semaphore for Concurrency Limiting",
+    "text": "Semaphore for Concurrency Limiting\nA semaphore limits how many operations run concurrently.\n\n# Allow max 2 concurrent tasks\nsem = asyncio.Semaphore(2)\n\ncount = 0\n\nasync def task():\n    global count\n    async with sem:  # Blocks if 2 tasks already running\n        count += 1\n        await asyncio.sleep(0.1)\n\n# Start 5 tasks - only 2 run at once\nawait asyncio.gather(*[task() for _ in range(5)])\nassert count == 5",
+    "crumbs": [
+      "Task Queue"
+    ]
+  },
+  {
+    "objectID": "queue.html#the-pattern-background-worker",
+    "href": "queue.html#the-pattern-background-worker",
+    "title": "Task Queue",
+    "section": "The Pattern: Background Worker",
+    "text": "The Pattern: Background Worker\nThis is the core pattern from our main.py:\n\nsource\n\nTaskQueue\n\n TaskQueue (max_workers, handler)\n\nInitialize self. See help(type(self)) for accurate signature.\n\n\nTest it\n\nresults = []\n\nasync def my_handler(x, y):\n    await asyncio.sleep(0.01)\n    results.append(x + y)\n\n# Create queue with handler\ntq = TaskQueue(max_workers=2, handler=my_handler)\n\n# Start worker\nawait tq.start()\n\n# Enqueue tasks (non-blocking)\nawait tq.enqueue(1, 2)\nawait tq.enqueue(3, 4)\nawait tq.enqueue(5, 6)\n\n# Wait for processing\nawait asyncio.sleep(0.1)\n\nassert results == [3, 7, 11]",
+    "crumbs": [
+      "Task Queue"
+    ]
+  },
+  {
+    "objectID": "queue.html#usage",
+    "href": "queue.html#usage",
+    "title": "Task Queue",
+    "section": "Usage",
+    "text": "Usage\nHere’s how you use it in your FastAPI app:\n\n# In your app:\n# task_queue = TaskQueue(max_workers=3, handler=process_user_data)\n#\n# @app.on_event(\"startup\")\n# async def startup():\n#     await task_queue.start()\n#\n# @app.post('/v0/user/data')\n# async def user_data(...):\n#     task = tasks.insert(...)\n#     await task_queue.enqueue(task.id, email, password, store)\n#     return {'id': task.id, 'status': 'queued'}",
+    "crumbs": [
+      "Task Queue"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "fscore",
+    "section": "",
+    "text": "This file will become your README and also the index of your documentation.",
+    "crumbs": [
+      "fscore"
+    ]
+  },
+  {
+    "objectID": "index.html#developer-guide",
+    "href": "index.html#developer-guide",
+    "title": "fscore",
+    "section": "Developer Guide",
+    "text": "Developer Guide\nIf you are new to using nbdev here are some useful pointers to get you started.\n\nInstall fscore in Development mode\n# make sure fscore package is installed in development mode\n$ pip install -e .\n\n# make changes under nbs/ directory\n# ...\n\n# compile to have changes apply to fscore\n$ nbdev_prepare",
+    "crumbs": [
+      "fscore"
+    ]
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "fscore",
+    "section": "Usage",
+    "text": "Usage\n\nInstallation\nInstall latest from the GitHub repository:\n$ pip install git+https://github.com/Fewsats/fscore.git\nor from conda\n$ conda install -c Fewsats fscore\nor from pypi\n$ pip install fscore\n\n\nDocumentation\nDocumentation can be found hosted on this GitHub repository’s pages. Additionally you can find package manager specific guidelines on conda and pypi respectively.",
+    "crumbs": [
+      "fscore"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "fscore",
+    "section": "How to use",
+    "text": "How to use\nFill me in please! Don’t forget code examples:\n\n1+1\n\n2",
+    "crumbs": [
+      "fscore"
+    ]
+  }
+]
