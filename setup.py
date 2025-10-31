@@ -44,7 +44,7 @@ setuptools.setup(
         'Development Status :: ' + statuses[int(cfg['status'])],
         'Intended Audience :: ' + cfg['audience'].title(),
         'Natural Language :: ' + cfg['language'].title(),
-    ] + ['Programming Language :: Python :: '+o for o in py_versions[py_versions.index(min_python):]] + (['License :: ' + lic[1] ] if lic[1] else []),
+    ] + ['Programming Language :: Python :: '+o for o in py_versions[py_versions.index(min_python):]],
     url = cfg['git_url'],
     packages = setuptools.find_packages(),
     include_package_data = True,
